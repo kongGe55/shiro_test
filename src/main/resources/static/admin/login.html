@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <!-- Meta, title, CSS, favicons, etc. -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>音乐分享网站</title>
+
+  <!-- Bootstrap -->
+  <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <!-- NProgress -->
+  <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+  <!-- Animate.css -->
+  <link href="../vendors/animate.css/animate.min.css" rel="stylesheet">
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <script src="../node_modules/vue-resource/dist/vue-resource.min.js"></script>
+  <!-- Custom Theme Style -->
+  <link href="../build/css/custom.min.css" rel="stylesheet">
+</head>
+
+<body class="login">
+<div id="login_vue">
+  <a class="hiddenanchor" id="signup"></a>
+  <a class="hiddenanchor" id="signin"></a>
+
+  <div class="login_wrapper">
+    <div class="animate form login_form">
+      <section class="login_content">
+        <form>
+          <h1>登陆账号</h1>
+          <p class="change_link" v-text>{{message}}</p>
+          <div>
+            <input type="text" v-model="name" class="form-control" placeholder="用户名" required="" />
+          </div>
+          <div>
+            <input type="password" v-model="user_password" class="form-control" placeholder="密码" required="" />
+          </div>
+          <div>
+            <a href="javascript:void(0);" class="btn btn-default submit" v-on:click="login">登陆</a>
+            <a class="reset_pass" href="#">忘记密码?</a>
+          </div>
+
+          <div class="clearfix"></div>
+
+          <div class="separator">
+            <p class="change_link">没有账号?
+              <a href="#signup" class="to_register"> 创建账号 </a>
+            </p>
+
+            <div class="clearfix"></div>
+            <br />
+
+            <div>
+              <h1><i class="fa fa-paw"></i> 一起享受音乐吧!</h1>
+              <p>©2019 All Rights Reserved. </p>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div id="register" class="animate form registration_form">
+      <section class="login_content">
+        <form>
+          <h1>创建账号</h1>
+          <div>
+            <input type="text" class="form-control" placeholder="Username" required="" v-model="name"/>
+          </div>
+          <div>
+            <input type="email" class="form-control" placeholder="Email" required="" v-model="email"/>
+          </div>
+          <div>
+            <input type="password" class="form-control" placeholder="Password" required="" v-model="user_password"/>
+          </div>
+          <div>
+            <a class="btn btn-default submit" href="#" v-on:click="register">注册</a>
+          </div>
+
+          <div class="clearfix"></div>
+
+          <div class="separator">
+            <p class="change_link">已有账号 ?
+              <a href="#signin" class="to_register"> 登陆 </a>
+            </p>
+
+            <div class="clearfix"></div>
+            <br />
+
+            <div>
+              <h1><i class="fa fa-paw"></i> 一起享受音乐吧!</h1>
+              <p>©2016 All Rights Reserved.</p>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+    var login_vue = new Vue({
+      el: '#login_vue',
+      data: {
+        user_password: '',
+        name : '',
+        email:'',
+        message :''
+      },
+      methods: {
+        login: function () {
+          this.$http.post('/user/toLogin',{name:this.name,password:this.user_password},{emulateJSON:true}).then(
+                  response =>{
+                    if (response.data.code==0){
+                      window.location.href='/admin/index.html'
+                    } else {
+                      this.message = response.data.message
+                    }
+                  }, data => {
+                    this.message = response.data.message
+                  }
+          )
+        },
+        register:function () {
+          this.$http.post('/user/register',{name:this.name,email:this.email,password:this.user_password},{emulateJSON:true}).then(
+                  response =>{
+                    if (response.data.code==0){
+                      alert("注册成功")
+                    } else {
+                      alert("注册失败")
+                    }
+                  }, data => {
+                    alert("注册失败")
+                  }
+          )
+        }
+      }
+    })
+</script>
+</html>
