@@ -1,5 +1,8 @@
 package com.ji.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 /**
  * ClassName: User
  * Description:
@@ -9,7 +12,9 @@ package com.ji.domain;
  * @version 1.0
  * @since JDK 1.8
  */
+@TableName("user")
 public class User {
+    @TableId(value = "id")
     private String id;
 
     public String getId() {

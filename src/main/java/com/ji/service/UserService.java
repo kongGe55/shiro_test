@@ -1,5 +1,6 @@
 package com.ji.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ji.domain.User;
 import com.ji.mapper.UserMapper;
@@ -32,7 +33,10 @@ public class UserService{
     }
     public List<User> findAll(){
 //        return userMapper.findAll();
-        return userMapper.selectByMap(null);
+        QueryWrapper<User> age = new QueryWrapper<User>().eq("age", 30);
+        List<User> users = userMapper.selectList(age.or(i->i.eq("name","ceshi")));
+        return users;
+//        return userMapper.selectByMap(null);
     }
 
     public boolean register(User eq) {
